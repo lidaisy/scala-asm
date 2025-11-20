@@ -329,6 +329,22 @@ public abstract class ClassVisitor {
   }
 
   /**
+   * Visits a permitted subclasses. A permitted subclass is one of the allowed subclasses of the
+   * current class.
+   *
+   * @param permittedSubclass the internal name of a permitted subclass (see {@link
+   *     Type#getInternalName()}).
+   */
+  public void visitLoadableDescriptors(final String fieldDescriptor) {
+    if (api < Opcodes.ASM9) {
+      throw new UnsupportedOperationException("PermittedSubclasses requires ASM9");
+    }
+    if (cv != null) {
+      cv.visitLoadableDescriptors(fieldDescriptor);
+    }
+  }
+
+  /**
    * Visits a field of the class.
    *
    * @param access the field's access flags (see {@link Opcodes}). This parameter also indicates if

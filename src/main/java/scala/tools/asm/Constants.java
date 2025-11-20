@@ -75,6 +75,7 @@ final class Constants {
   static final String NEST_MEMBERS = "NestMembers";
   static final String PERMITTED_SUBCLASSES = "PermittedSubclasses";
   static final String RECORD = "Record";
+  static final String LOADABLE_DESCRIPTORS = "LoadableDescriptors";
 
   // ASM specific access flags.
   // WARNING: the 16 least significant bits must NOT be used, to avoid conflicts with standard

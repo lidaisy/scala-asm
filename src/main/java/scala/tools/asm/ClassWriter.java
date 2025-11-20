@@ -189,6 +189,12 @@ public class ClassWriter extends ClassVisitor {
   /** The 'classes' array of the PermittedSubclasses attribute, or {@literal null}. */
   private ByteVector permittedSubclasses;
 
+  /** The number_of_classes field of the PermittedSubclasses attribute, or 0. */
+  private int numberOfLoadableDescriptors;
+
+  /** The 'classes' array of the PermittedSubclasses attribute, or {@literal null}. */
+  private ByteVector loadableDescriptors;
+
   /**
    * The record components of this class, stored in a linked list of {@link RecordComponentWriter}
    * linked via their {@link RecordComponentWriter#delegate} field. This field stores the first
@@ -437,6 +443,15 @@ public class ClassWriter extends ClassVisitor {
   }
 
   @Override
+  public final void visitLoadableDescriptors(final String fieldDescriptor) {
+    if (loadableDescriptors == null) {
+      loadableDescriptors = new ByteVector();
+    }
+    ++numberOfLoadableDescriptors;
+    loadableDescriptors.putShort(symbolTable.addConstantUtf8(fieldDescriptor));
+  }
+
+  @Override
   public final FieldVisitor visitField(
       final int access,
       final String name,
@@ -604,6 +619,11 @@ public class ClassWriter extends ClassVisitor {
       size += 8 + recordSize;
       symbolTable.addConstantUtf8(Constants.RECORD);
     }
+    if (loadableDescriptors != null) {
+      ++attributesCount;
+      size += 8 + loadableDescriptors.length;
+      symbolTable.addConstantUtf8(Constants.LOADABLE_DESCRIPTORS);
+    }
     if (firstAttribute != null) {
       attributesCount += firstAttribute.getAttributeCount();
       size += firstAttribute.computeAttributesSize(symbolTable);
@@ -726,6 +746,13 @@ public class ClassWriter extends ClassVisitor {
         recordComponentWriter = (RecordComponentWriter) recordComponentWriter.delegate;
       }
     }
+    if (loadableDescriptors != null) {
+      result
+          .putShort(symbolTable.addConstantUtf8(Constants.LOADABLE_DESCRIPTORS))
+          .putInt(loadableDescriptors.length + 2)
+          .putShort(numberOfLoadableDescriptors)
+          .putByteArray(loadableDescriptors.data, 0, loadableDescriptors.length);
+    }
     if (firstAttribute != null) {
       firstAttribute.putAttributes(symbolTable, result);
     }
@@ -766,6 +793,8 @@ public class ClassWriter extends ClassVisitor {
     permittedSubclasses = null;
     firstRecordComponent = null;
     lastRecordComponent = null;
+    numberOfLoadableDescriptors = 0;
+    loadableDescriptors = null;
     firstAttribute = null;
     compute = hasFrames ? MethodWriter.COMPUTE_INSERTED_FRAMES : MethodWriter.COMPUTE_NOTHING;
     new ClassReader(classFile, 0, /* checkClassVersion= */ false)

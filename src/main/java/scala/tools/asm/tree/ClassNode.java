@@ -150,6 +150,9 @@ public class ClassNode extends ClassVisitor {
   /** The record components of this class. May be {@literal null}. */
   public List<RecordComponentNode> recordComponents;
 
+  /** The record components of this class. May be {@literal null}. */
+  public List<String> loadableDescriptors;
+
   /** The fields of this class. */
   public List<FieldNode> fields;
 
@@ -278,6 +281,11 @@ public class ClassNode extends ClassVisitor {
     RecordComponentNode recordComponent = new RecordComponentNode(name, descriptor, signature);
     recordComponents = Util.add(recordComponents, recordComponent);
     return recordComponent;
+  }
+
+  @Override
+  public void visitLoadableDescriptors(final String fieldDescriptor) {
+    loadableDescriptors = Util.add(loadableDescriptors, fieldDescriptor);
   }
 
   @Override
@@ -457,6 +465,12 @@ public class ClassNode extends ClassVisitor {
     if (recordComponents != null) {
       for (int i = 0, n = recordComponents.size(); i < n; ++i) {
         recordComponents.get(i).accept(classVisitor);
+      }
+    }
+    // Visit the permitted subclasses.
+    if (loadableDescriptors != null) {
+      for (int i = 0, n = loadableDescriptors.size(); i < n; ++i) {
+        classVisitor.visitLoadableDescriptors(loadableDescriptors.get(i));
       }
     }
     // Visit the fields.
