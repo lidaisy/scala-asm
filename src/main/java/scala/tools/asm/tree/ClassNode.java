@@ -150,7 +150,7 @@ public class ClassNode extends ClassVisitor {
   /** The record components of this class. May be {@literal null}. */
   public List<RecordComponentNode> recordComponents;
 
-  /** The record components of this class. May be {@literal null}. */
+  /** The loadable descriptors of this class. May be {@literal null}. */
   public List<String> loadableDescriptors;
 
   /** The fields of this class. */
@@ -467,7 +467,7 @@ public class ClassNode extends ClassVisitor {
         recordComponents.get(i).accept(classVisitor);
       }
     }
-    // Visit the permitted subclasses.
+    // Visit the loadable descriptors.
     if (loadableDescriptors != null) {
       for (int i = 0, n = loadableDescriptors.size(); i < n; ++i) {
         classVisitor.visitLoadableDescriptors(loadableDescriptors.get(i));

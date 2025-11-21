@@ -32,7 +32,7 @@ package scala.tools.asm;
  * {@code visit} [ {@code visitSource} ] [ {@code visitModule} ][ {@code visitNestHost} ][ {@code
  * visitOuterClass} ] ( {@code visitAnnotation} | {@code visitTypeAnnotation} | {@code
  * visitAttribute} )* ( {@code visitNestMember} | [ {@code * visitPermittedSubclass} ] | {@code
- * visitInnerClass} | {@code visitRecordComponent} | {@code visitField} | {@code visitMethod} )*
+ * visitInnerClass} | {@code visitRecordComponent} | {@code * visitLoadableDescriptors} | {@code visitField} | {@code visitMethod} )*
  * {@code visitEnd}.
  *
  * @author Eric Bruneton
@@ -329,11 +329,10 @@ public abstract class ClassVisitor {
   }
 
   /**
-   * Visits a permitted subclasses. A permitted subclass is one of the allowed subclasses of the
-   * current class.
+   * Visits a loadable descriptor. A loadable descriptor is the descriptor of a field
+   * pointing to a value class.
    *
-   * @param permittedSubclass the internal name of a permitted subclass (see {@link
-   *     Type#getInternalName()}).
+   * @param fieldDescriptor descriptor of a field pointing to a value class.
    */
   public void visitLoadableDescriptors(final String fieldDescriptor) {
     if (api < Opcodes.ASM9) {

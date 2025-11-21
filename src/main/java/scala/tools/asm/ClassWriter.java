@@ -189,10 +189,10 @@ public class ClassWriter extends ClassVisitor {
   /** The 'classes' array of the PermittedSubclasses attribute, or {@literal null}. */
   private ByteVector permittedSubclasses;
 
-  /** The number_of_classes field of the PermittedSubclasses attribute, or 0. */
+  /** The number_of_classes field of the LoadableDescriptors attribute, or 0. */
   private int numberOfLoadableDescriptors;
 
-  /** The 'classes' array of the PermittedSubclasses attribute, or {@literal null}. */
+  /** The 'class indices' array of the LoadableDescriptors attribute, or {@literal null}. */
   private ByteVector loadableDescriptors;
 
   /**
