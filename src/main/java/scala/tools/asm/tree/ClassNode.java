@@ -29,6 +29,7 @@ package scala.tools.asm.tree;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import scala.tools.asm.AnnotationVisitor;
 import scala.tools.asm.Attribute;
 import scala.tools.asm.ClassVisitor;
@@ -151,7 +152,7 @@ public class ClassNode extends ClassVisitor {
   public List<RecordComponentNode> recordComponents;
 
   /** The loadable descriptors of this class. May be {@literal null}. */
-  public List<String> loadableDescriptors;
+  public Set<String> loadableDescriptors;
 
   /** The fields of this class. */
   public List<FieldNode> fields;
@@ -469,8 +470,8 @@ public class ClassNode extends ClassVisitor {
     }
     // Visit the loadable descriptors.
     if (loadableDescriptors != null) {
-      for (int i = 0, n = loadableDescriptors.size(); i < n; ++i) {
-        classVisitor.visitLoadableDescriptors(loadableDescriptors.get(i));
+      for (String descriptor : loadableDescriptors) {
+        classVisitor.visitLoadableDescriptors(descriptor);
       }
     }
     // Visit the fields.

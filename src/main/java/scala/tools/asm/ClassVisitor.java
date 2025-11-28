@@ -336,7 +336,7 @@ public abstract class ClassVisitor {
    */
   public void visitLoadableDescriptors(final String fieldDescriptor) {
     if (api < Opcodes.ASM9) {
-      throw new UnsupportedOperationException("PermittedSubclasses requires ASM9");
+      throw new UnsupportedOperationException("LoadableDescriptors requires ASM9");
     }
     if (cv != null) {
       cv.visitLoadableDescriptors(fieldDescriptor);

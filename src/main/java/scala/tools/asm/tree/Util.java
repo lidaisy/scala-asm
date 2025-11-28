@@ -28,7 +28,9 @@
 package scala.tools.asm.tree;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Utility methods to convert an array of primitive or object values to a mutable ArrayList, not
@@ -44,6 +46,12 @@ final class Util {
     List<T> newList = list == null ? new ArrayList<>(1) : list;
     newList.add(element);
     return newList;
+  }
+
+  static <T> Set<T> add(final Set<T> set, final T element) {
+    Set<T> newSet = set == null ? new HashSet<>(1) : set;
+    newSet.add(element);
+    return newSet;
   }
 
   static <T> List<T> asArrayList(final int length) {
